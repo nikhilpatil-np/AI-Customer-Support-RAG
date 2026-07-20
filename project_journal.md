@@ -27,3 +27,25 @@
 ### Next Plan
 - Generate embeddings using Sentence Transformers.
 - Create a FAISS vector database.
+
+
+## Day 2
+
+### Work Completed
+- Installed Sentence Transformers and FAISS.
+- Generated embeddings for document chunks.
+- Created a FAISS vector database.
+- Implemented semantic similarity search.
+- Tested document retrieval with sample queries.
+- Saved the FAISS index for future use.
+- Committed and pushed the changes to GitHub.
+
+### Issues Faced
+- No major issues during embedding generation and vector indexing.
+
+### Solution
+- Verified embedding dimensions and successfully tested semantic search.
+
+### Next Plan
+- Integrate LangChain with the vector database.
+- Connect an LLM to build the complete RAG pipeline.
