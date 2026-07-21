@@ -3,55 +3,118 @@ from preprocessing import TextPreprocessor
 from utils import TextChunker
 from embeddings import EmbeddingGenerator
 from rag_chatbot import VectorStore
+from llm import LLMModel
 
-# Initialize
+# -------------------------------
+# Initialize Components
+# -------------------------------
 loader = DocumentLoader()
 preprocessor = TextPreprocessor()
 chunker = TextChunker(chunk_size=300, overlap=50)
 embedding_generator = EmbeddingGenerator()
 vector_store = VectorStore()
+llm = LLMModel()
 
-# Load documents
+print("\nLoading documents...")
+
+# -------------------------------
+# Load Documents
+# -------------------------------
 documents = loader.load_documents("data/docs")
 
-# Preprocess
+# -------------------------------
+# Preprocess Documents
+# -------------------------------
 cleaned_documents = preprocessor.preprocess_documents(documents)
 
-# Create chunks
+# -------------------------------
+# Create Text Chunks
+# -------------------------------
 chunks = chunker.create_chunks(cleaned_documents)
 
-# Generate embeddings
+print(f"Total Chunks Created: {len(chunks)}")
+
+# -------------------------------
+# Generate Embeddings
+# -------------------------------
 embeddings = embedding_generator.generate_embeddings(chunks)
 
-# Create FAISS index
+print("Embeddings Generated Successfully.")
+
+# -------------------------------
+# Create FAISS Vector Database
+# -------------------------------
 vector_store.create_index(embeddings)
 
-# Save index
+# Save FAISS Index
 vector_store.save_index("models/faiss_index.bin")
 
-# Load index
-vector_store.load_index("models/faiss_index.bin")
+print("FAISS Index Saved Successfully.")
 
-print("\n")
-print("=" * 60)
-print("Semantic Search Test")
-print("=" * 60)
+print("\n===================================")
+print(" AI Customer Support RAG Chatbot ")
+print("===================================")
 
-query = input("Enter your question: ")
+# -------------------------------
+# Chat Loop
+# -------------------------------
+while True:
 
-query_embedding = embedding_generator.model.encode(
-    [query],
-    convert_to_numpy=True
-)
+    question = input("\nAsk a Question (type 'exit' to quit): ")
 
-distances, indices = vector_store.search(query_embedding, top_k=3)
+    if question.lower() == "exit":
+        print("\nGoodbye!")
+        break
 
-print("\nTop Matching Chunks")
-print("-" * 60)
+    # Generate embedding for user query
+    query_embedding = embedding_generator.model.encode(
+        [question],
+        convert_to_numpy=True
+    )
 
-for rank, index in enumerate(indices[0], start=1):
+    # Retrieve Top 3 Similar Chunks
+    distances, indices = vector_store.search(
+        query_embedding,
+        top_k=3
+    )
 
-    print(f"\nResult {rank}")
-    print(f"File : {chunks[index]['file_name']}")
-    print(chunks[index]["text"])
-    print("-" * 60)
+    # Guardrail
+    if distances[0][0] > 1.0:
+        print("\nI don't know based on the available documents.")
+        continue
+
+    context = ""
+
+    print("\nRetrieved Context:\n")
+
+    for i, index in enumerate(indices[0]):
+
+        print(f"Chunk {i+1}:")
+        print(chunks[index]["text"])
+        print("-" * 50)
+
+        context += chunks[index]["text"] + "\n"
+
+    prompt = f"""
+You are an AI Customer Support Assistant.
+
+Answer ONLY from the given context.
+
+If the answer is not available in the context,
+reply exactly:
+
+I don't know based on the available documents.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
+"""
+
+    answer = llm.generate_answer(prompt)
+
+    print("\nAI Answer:\n")
+    print(answer)

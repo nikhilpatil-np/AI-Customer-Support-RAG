@@ -12,7 +12,7 @@ class VectorStore:
         self.index = faiss.IndexFlatL2(dimension)
         self.index.add(np.array(embeddings))
 
-        print(f"FAISS index created successfully.")
+        print("FAISS index created successfully.")
         print(f"Total vectors stored: {self.index.ntotal}")
 
     def search(self, query_embedding, top_k=3):
@@ -24,5 +24,4 @@ class VectorStore:
 
     def load_index(self, path):
         self.index = faiss.read_index(path)
-
         print("FAISS index loaded successfully.")
