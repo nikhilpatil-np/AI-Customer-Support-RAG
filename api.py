@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+from logger import log_chat
 from document_loader import DocumentLoader
 from preprocessing import TextPreprocessor
 from utils import TextChunker
@@ -73,6 +73,7 @@ Answer:
 """
 
     answer = llm.generate_answer(prompt)
+    log_chat(request.question, answer)
 
     return {
         "question": request.question,

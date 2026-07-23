@@ -31,6 +31,9 @@
 
 ## Day 2
 
+### Date
+20 July 2026
+
 ### Work Completed
 - Installed Sentence Transformers and FAISS.
 - Generated embeddings for document chunks.
@@ -55,7 +58,7 @@
 
 ## Day 3 – RAG Pipeline Integration with Ollama
 
-**Date:** 22 July 2026
+**Date:** 21 July 2026
 
 ### Objective
 Integrate the Retrieval-Augmented Generation (RAG) pipeline with a local LLM and enable question answering using the knowledge base.
@@ -93,3 +96,84 @@ Integrate the Retrieval-Augmented Generation (RAG) pipeline with a local LLM and
 
 ### Outcome
 Successfully completed the RAG pipeline with local LLM integration. The chatbot now retrieves relevant information from the knowledge base and generates context-aware responses while avoiding unsupported answers.
+
+# Day 4 Project Journal
+
+## Date
+
+22 July 2026
+
+---
+
+## Work Completed
+
+- Developed the FastAPI backend for the AI Customer Support RAG Chatbot.
+- Created REST API endpoints to process user questions and return AI-generated responses.
+- Integrated the existing RAG pipeline with the FastAPI backend.
+- Developed a Streamlit-based user interface for the chatbot.
+- Connected the Streamlit frontend with the FastAPI API using HTTP requests.
+- Tested the complete chatbot workflow from user input to AI-generated response.
+- Verified that the chatbot correctly answered questions from the knowledge base and returned "I don't know based on the available documents." for unrelated queries.
+
+---
+
+## Challenges Faced
+
+- Faced API connection issues between Streamlit and FastAPI.
+- Fixed request handling and endpoint communication.
+- Verified that both services were running simultaneously for successful communication.
+
+---
+
+## Solutions
+
+- Corrected the API endpoint configuration.
+- Successfully connected the Streamlit frontend with the FastAPI backend.
+- Tested multiple customer support questions to verify accurate responses.
+
+---
+
+## Outcome
+
+Successfully completed the FastAPI backend and Streamlit frontend integration. The AI Customer Support RAG Chatbot is now capable of accepting user questions through a web interface, retrieving relevant information from the knowledge base, and generating accurate responses using the integrated RAG pipeline.
+
+# Day 5 Project Journal
+
+## Date
+
+23 July 2026
+
+---
+
+## Work Completed
+
+- Developed FastAPI backend API.
+- Connected Streamlit frontend with FastAPI.
+- Added conversation logging.
+- Implemented user feedback system (Helpful / Not Helpful).
+- Improved chatbot response handling.
+- Updated project documentation.
+- Performed final testing and bug fixing.
+- Prepared project for GitHub submission.
+
+---
+
+## Challenges Faced
+
+- API connection issues.
+- Ollama integration.
+- Streamlit feedback state handling.
+
+---
+
+## Solutions
+
+- Fixed FastAPI endpoint.
+- Corrected Ollama response handling.
+- Used Streamlit session state for feedback.
+
+---
+
+## Outcome
+
+Successfully completed the AI Customer Support RAG Chatbot with FastAPI backend, Streamlit frontend, FAISS vector search, Ollama integration, conversation logging, and user feedback mechanism.
